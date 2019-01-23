@@ -26,7 +26,7 @@ CREATE TABLE `cSessionInfo` (
   `uuid` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `skey` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_visit_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_visit_time` timestamp,
   `session_key` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_info` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`open_id`),
