@@ -1,11 +1,12 @@
 const https = require('https');
-const { mysql } = require('../qcloud');
+var db = require('../helper/db');
 
 module.exports = async (ctx, next) => {
-  const { isbn, openId } = ctx.request.body;
+  const { isbn, open_id } = ctx.request.body;
 
   // 禁止重复添加
-  const findRes = await mysql('books').select('title').where('isbn', isbn);
+  const findRes = await db.query('select * from books where isbn = ?', [isbn]);
+
   if (findRes.length) {
     ctx.state = {
       code: -1,
@@ -28,9 +29,11 @@ module.exports = async (ctx, next) => {
     const authors = book.author.join(',');
     // 添加到数据库
     try {
-      await mysql('books').insert({
-        isbn, openId, title, image, alt, publisher, summary, price, rate, tags, authors
-      });
+      await db.query(
+        `insert into books(isbn, openid, title, image, alt, publisher, summary, price, rate, tags, authors)
+          values(?, ?, ?, ?, ?, ?, ?, ? ?, ?, ?) `,
+        [isbn, open_id, title, image, alt, publisher, summary, price, rate, tags, authors]
+      );
       ctx.state.data = {
         title,
         msg: 'success'

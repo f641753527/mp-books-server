@@ -1,10 +1,44 @@
+const https = require('https');
+const config = require('../config');
+var db = require('../helper/db');
+
 // 登录授权接口
 module.exports = async (ctx, next) => {
     // 通过 Koa 中间件进行登录之后
     // 登录信息会被存储到 ctx.state.$wxInfo
     // 具体查看：
-    if (ctx.state.$wxInfo.loginState) {
-        ctx.state.data = ctx.state.$wxInfo.userinfo
-        ctx.state.data['time'] = Math.floor(Date.now() / 1000)
+    const { code } = ctx.request.body;
+
+    const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${config.appId}&secret=${config.appSecret}&js_code=${code}&grant_type=authorization_code`;
+
+    const res = await getOpenId(url);
+
+    const users = await db.query('select * from users where open_id = ?', [res.openid]);
+
+    if (!users.length) {
+        await db.query('insert into users VALUES(?, ?, ?)', [res.openid, res.session_key, '']);
+        ctx.state.data = {
+            open_id: res.openid,
+        }
+    } else {
+        ctx.state.data = {
+            open_id: res.openid,
+        }
     }
+}
+
+function getOpenId(url) {
+    return new Promise((resolve, reject) => {
+        https.get(url, res => {
+            let urlData = '';
+
+            res.on('data', data => {
+                urlData += data;
+            });
+            res.on('end', data => {
+                const res = JSON.parse(urlData);
+                resolve(res);
+            });
+        });
+    });
 }

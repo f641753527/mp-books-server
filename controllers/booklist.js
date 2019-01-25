@@ -1,4 +1,5 @@
-const { mysql } = require('../qcloud');
+var db = require('../helper/db');
+
 
 module.exports = async (ctx, next) => {
   const { pageindex, pagesize, openid } = ctx.request.query;
