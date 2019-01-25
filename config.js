@@ -14,7 +14,7 @@ const CONF = {
         port: 3306,
         user: 'root',
         db: 'mpBooks',
-        pass: '93pj6.29',
+        pass: 'root',
         // pass: 'root',
         char: 'utf8mb4'
     },

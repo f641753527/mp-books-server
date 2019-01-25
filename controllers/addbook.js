@@ -30,9 +30,8 @@ module.exports = async (ctx, next) => {
     // 添加到数据库
     try {
       await db.query(
-        `insert into books(isbn, openid, title, image, alt, publisher, summary, price, rate, tags, authors)
-          values(?, ?, ?, ?, ?, ?, ?, ? ?, ?, ?) `,
-        [isbn, open_id, title, image, alt, publisher, summary, price, rate, tags, authors]
+        `INSERT INTO books(isbn, openid, title, image, publisher, alt, summary, price, rate, tags, authors) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?) `,
+        [isbn, open_id, title, image, publisher, alt, summary, price, rate, tags, authors]
       );
       ctx.state.data = {
         title,
