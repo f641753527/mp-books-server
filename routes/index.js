@@ -8,11 +8,15 @@ const router = require('koa-router')({
 const login = require('../controllers/login')
 const updateUser = require('../controllers/updateUser')
 const addbook = require('../controllers/addbook')
+const booklist = require('../controllers/booklist')
+const toplist = require('../controllers/toplist')
 
 
 router.post('/login', login);
 router.post('/update_user', updateUser);
 router.post('/addbook', addbook);
+router.get('/booklist', booklist);
+router.get('/toplist', toplist);
 
 
 // --- 图片上传 Demo --- //

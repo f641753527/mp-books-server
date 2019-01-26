@@ -4,16 +4,16 @@ var db = require('../helper/db');
 module.exports = async (ctx, next) => {
   const { pageindex, pagesize, openid } = ctx.request.query;
   try {
-    const res = mysql('books')
-                        .select('books.*', 'cSessionInfo.user_info')
-                          .join('cSessionInfo', 'books.openid', 'cSessionInfo.open_id')
-                            .orderBy('books.id', 'desc');
+
+    const res = await db.query(`select books.*, users.user_info from books left join users on books.openid = users.open_id order by books.id asc`);
 
     let list = [];
       if (openid) {
-        list = await res.where('books.openid', openid);
+        list = res.filter(v => v.openid === openid);
       } else {
-        list = await res.limit(Number(pagesize)).offset(Number(pagesize) * Number(pageindex));
+        const page_total = Math.ceil((res.length / Number(pagesize)));
+        const start = Number(pagesize) * Number(pageindex);
+        list = pageindex === page_total - 1 ? res.slice(start) : res.slice(start, start + Number(pagesize));
       }
 
     
