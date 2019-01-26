@@ -10,6 +10,9 @@ const updateUser = require('../controllers/updateUser')
 const addbook = require('../controllers/addbook')
 const booklist = require('../controllers/booklist')
 const toplist = require('../controllers/toplist')
+const bookdetail = require('../controllers/bookdetail')
+const addcomment = require('../controllers/addcomment')
+const commentList = require('../controllers/commentList')
 
 
 router.post('/login', login);
@@ -17,6 +20,9 @@ router.post('/update_user', updateUser);
 router.post('/addbook', addbook);
 router.get('/booklist', booklist);
 router.get('/toplist', toplist);
+router.get('/bookdetail', bookdetail);
+router.post('/addComment', addcomment);
+router.get('/getCommentList', commentList);
 
 
 // --- 图片上传 Demo --- //

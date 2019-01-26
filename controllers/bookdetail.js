@@ -1,16 +1,11 @@
-const { mysql } = require('../qcloud');
+var db = require('../helper/db');
 
 module.exports = async (ctx, next) => {
   const { bookid } = ctx.request.query;
 
-  const book = await mysql('books')
-                      .select('books.*', 'cSessionInfo.user_info')
-                      .join('cSessionInfo', 'books.openid', 'cSessionInfo.open_id')
-                      .where('id', bookid).first();
+  const books = await db.query(`select books.*, users.user_info from books left join users on books.openid = users.open_id where books.id = ?`, [bookid]);
 
-
-
-
+  const book = books[0];
 
   const userinfo = JSON.parse(book.user_info);
 
@@ -23,5 +18,5 @@ module.exports = async (ctx, next) => {
     }
   });
 
-  await mysql('books').where('id', bookid).increment('count', 1);
+  await db.query(`UPDATE books SET count=count+1 WHERE id = ?`, [bookid]);
 }
