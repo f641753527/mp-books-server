@@ -14,7 +14,7 @@ CREATE TABLE `users` (
    `image` varchar(200) DEFAULT NULL,   
    `alt` varchar(200) NOT NULL,   
    `publisher` varchar(100) NOT NULL,   
-   `summary` varchar(1000) NOT NULL,   
+   `summary` varchar(20000) NOT NULL,   
    `price` varchar(50) DEFAULT NULL,   
    `rate` float DEFAULT NULL,   
    `tags` varchar(100) DEFAULT NULL,   

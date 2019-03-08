@@ -1,10 +1,14 @@
-const { mysql } = require('../qcloud');
+var db = require('../helper/db');
 
 module.exports = async (ctx, next) => {
   const { bookid, openid, comment, geo: location, phone } = ctx.request.body;
 
   try {
-    await mysql('comments').insert({ bookid, openid, comment,location, phone });
+
+    await db.query(
+      `insert into comments (bookid, openid, comment, phone, location)  values(?, ?, ?, ?, ?)`,
+      [bookid, openid, comment, phone, location]
+    );
 
     ctx.state.data = {
       msg: '评论成功',
