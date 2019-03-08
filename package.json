@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "pm2 start process.prod.json --no-daemon --name=mp-books",
+    "start": "pm2 start process.prod.json --no-daemon --name=mpbooks",
     "dev": "nodemon --config nodemon.json app.js",
     "initdb": "npm install"
   },
